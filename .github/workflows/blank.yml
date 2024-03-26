@@ -6,6 +6,14 @@ on:
         description: 'Environment to deploy'
         type: environment
         required: true
+      application:
+        description: 'Application to deploy'
+        required: true
+        type: choice
+        options:
+          - 'nginx'
+          - 'api_back'
+          - 'prometheus_daemon'
 
 jobs:
   deploy:
@@ -20,8 +28,19 @@ jobs:
         - run: actions/checkout@v4
 
         - name: Get Docker TAG
-          id: docker_tag
+          id: deploy_data
+          env: 
+            APPLICATION: ${{ github.event.inputs.application }}
           run: |
-            echo "tag=$(cat state.json | jq '.${{ vars.DOCKER_IMAGE }}.dockerTag')" >> $GITHUB_OUTPUT
+            echo "tag=$(cat ${{ vars.JSON_FILE }} | jq '.${{ env.APPLICATION }}.dockerTag')" >> $GITHUB_OUTPUT
+            echo "cluster=$(cat ${{ vars.JSON_FILE }} | jq '.${{ env.APPLICATION }}.ecsCluster')" >> $GITHUB_OUTPUT
+            echo "service=$(cat ${{ vars.JSON_FILE }} | jq '.${{ env.APPLICATION }}.ecsService')" >> $GITHUB_OUTPUT
+            echo "container=$(cat ${{ vars.JSON_FILE }} | jq '.${{ env.APPLICATION }}.containerInTD')" >> $GITHUB_OUTPUT
+        
 
-        - run: "deploying to ${{ vars.ECS_SERVICE }} with version ${{ steps .docker_tag.outputs.tag }}..."
+        - run: "deploying to ${{ env.ECS_SERVICE }} in cluster ${{ env.ECS_CLUSTER }} with version ${{env.DOCKER_TAG }} in container ${{ env.CONTAINER_IN_TD }}..."
+          env:
+            ECS_CLUSTER: ${{ steps.deploy_data.outputs.cluster }}
+            ECS_SERVICE: ${{ steps.deploy_data.outputs.service }}
+            CONTAINER_IN_TD: ${{ steps.deploy_data.outputs.container }}
+            DOCKER_TAG: ${{ steps.deploy_data.outputs.tag }}

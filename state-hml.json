@@ -1,0 +1,20 @@
+{
+    "api_back": {
+        "dockerTag": "v1.0.0",
+        "ecsService": "api_backend",
+        "ecsCluster": "api",
+        "containerInTD": "api"
+    },
+    "nginx": {
+        "dockerTag": "v1.2.0",
+        "ecsService": "proxy",
+        "ecsCluster": "nginx_proxy",
+        "containerInTD": "nginx"
+    },
+    "prometheus_daemon": {
+        "dockerTag": "v3.2.1",
+        "ecsService": "prometheus_daemon",
+        "ecsCluster": "api",
+        "containerInTD": "daemon"
+    }
+}
