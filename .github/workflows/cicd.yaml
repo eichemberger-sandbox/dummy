@@ -1,0 +1,27 @@
+name: Deploy to ECS
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        type: environment
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy to ECS
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    permissions:
+      id-token: write
+      contents: read 
+    timeout-minutes: 25
+    steps:
+        - run: actions/checkout@v4
+
+        - name: Get Docker TAG
+          id: docker_tag
+          run: |
+            echo "tag=$(cat state.json | jq '.${{ vars.DOCKER_IMAGE }}.dockerTag')" >> $GITHUB_OUTPUT
+
+        - run: "deploying to ${{ vars.ECS_SERVICE }} with version ${{ steps .docker_tag.outputs.tag }}..."
