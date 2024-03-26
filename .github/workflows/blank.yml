@@ -25,7 +25,7 @@ jobs:
       contents: read 
     timeout-minutes: 25
     steps:
-        - run: actions/checkout@v4
+        - uses: actions/checkout@v4
 
         - name: Get Docker TAG
           id: deploy_data
