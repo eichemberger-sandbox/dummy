@@ -1,0 +1,16 @@
+environments:
+  - id: us-92
+    containers:
+      - container: api
+        targetBranch: develop
+      - container: app
+        targetBranch: develop
+      - container: postgres
+  - id: us-99
+    containers:
+      - container: api
+        targetBranch: develop
+      - container: app
+        targetBranch: develop
+      - container: postgres
+        targetBranch: develop
