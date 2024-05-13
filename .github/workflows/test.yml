@@ -11,6 +11,10 @@ jobs:
     steps:
         - uses: actions/checkout@v4
 
+        - run: sudo apt update && sudo apt install yq
+
+        - run: yq -p yaml -o json input.yml
+
         - run: echo "buildApi=true" >> $GITHUB_ENV
 
         - run: echo ${{ env.buildApi }}
