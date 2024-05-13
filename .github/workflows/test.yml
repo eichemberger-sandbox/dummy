@@ -13,7 +13,7 @@ jobs:
 
         - run: sudo snap install yq --channel=v3/stable
 
-        - run: yq -r input.yml > dummy.json
+        - run: yq r -j input.yml > dummy.json
 
         - run: cat dummy.json
 
