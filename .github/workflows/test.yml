@@ -1,4 +1,4 @@
-name: Deploy to ECS
+name: env tests
 on: 
   workflow_dispatch:
   
@@ -18,3 +18,8 @@ jobs:
         - run: echo "buildApi=true" >> $GITHUB_ENV
 
         - run: echo ${{ env.buildApi }}
+  retrieveEnv:
+    name: retrieving
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ env.buildApi }}
