@@ -1,0 +1,29 @@
+name: Deploy to ECS
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        type: environment
+        required: true
+      application:
+        description: 'Application to deploy'
+        required: true
+        type: choice
+        options:
+          - 'nginx'
+          - 'api_back'
+          - 'prometheus_daemon'
+
+jobs:
+  setenv:
+    name: Deploy to ECS
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "buildApi=true" >> $GITHUB_ENV
+
+        - run: echo ${{ env.buildApi }}
