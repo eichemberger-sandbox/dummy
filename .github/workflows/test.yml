@@ -1,6 +1,9 @@
 name: env tests
 on: 
   workflow_dispatch:
+
+env:
+  buildApi: false
   
 jobs:
   setenv:
