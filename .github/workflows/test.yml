@@ -11,7 +11,7 @@ jobs:
     steps:
         - uses: actions/checkout@v4
 
-        - run: sudo apt update && sudo apt install yq
+        - run: sudo snap install yq --channel=v3/stable -y
 
         - run: yq -p yaml -o json input.yml
 
