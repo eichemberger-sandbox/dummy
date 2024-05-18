@@ -1,1 +1,36 @@
+name: Alegra
+on: 
+  workflow_dispatch:
 
+env:
+  buildApi: false
+  
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "Building application..."
+  dockerize:
+    name: dockerize
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "Building Docker image"
+  deployQA:
+    name: deployQA
+    needs: 
+      - dockerize
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "Deploying dynamic env"
