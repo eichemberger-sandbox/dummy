@@ -14,8 +14,12 @@ jobs:
         - uses: actions/checkout@v4
 
         - run: echo "Building application..."
+
   dockerize:
     name: dockerize
+    strategy:
+      matrix:
+        architecture: [amd64, arm64]
     needs:
       - build
     runs-on: ubuntu-latest
@@ -23,7 +27,8 @@ jobs:
     steps:
         - uses: actions/checkout@v4
 
-        - run: echo "Building Docker image"
+        - run: echo "Building Docker image for ${{ matrix.architecture }}..."
+
   deployQA:
     name: deployQA
     needs: 
@@ -34,3 +39,146 @@ jobs:
         - uses: actions/checkout@v4
 
         - run: echo "Deploying dynamic env"
+
+  Income_Invoice_Actions:
+    name: Income_Invoice_Actions
+    needs: 
+      - deployQA
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "running test for Income_Invoice_Actions"   
+
+  Income_Invoice_CreationProcess_1:
+    name: Income_Invoice_CreationProcess_1
+    needs: 
+      - deployQA
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "running test for Income_Invoice_CreationProcess_1"   
+
+  Income_Invoice_creationProcessFE:
+    name: testIncomeInvoiceCreationFE
+    needs: 
+      - deployQA
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "running test for Income_Invoice_creationProcessFE"  
+
+  Income_API:
+    name: Income_API
+    needs: 
+      - deployQA
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "running test for Income_API"  
+
+  Expense_Bills_CreationProcessFE_1:
+    name: Expense_Bills_CreationProcessFE_1
+    needs: 
+      - deployQA
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "running test for Expense_Bills_CreationProcessFE_1"
+
+  Expenses_API:
+    name: Expenses_API
+    needs: 
+      - deployQA
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "running test for Expenses_API"  
+        
+  Income_Invoice_CreationProcess_2:
+    name: Income_Invoice_CreationProcess_2
+    needs: 
+      - deployQA
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "running test for Income_Invoice_CreationProcess_2"  
+
+  Items:
+    name: Items
+    needs: 
+      - deployQA
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "running test for Items"  
+
+  API:
+    name: API
+    needs: 
+      - deployQA
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "running test for API"  
+
+  Kardex:
+    name: API
+    needs: 
+      - deployQA
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "running test for Kardex" 
+
+  Login_Signup_cypress_16:
+    name: Login_Signup_cypress_16
+    needs: 
+      - deployQA
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "running test for Login_Signup_cypress_16" 
+
+  destroyQA:
+    name: DestroyQA
+    needs: 
+      - Income_Invoice_Actions
+      - Income_Invoice_CreationProcess_1
+      - Income_Invoice_creationProcessFE
+      - Income_API
+      - Expense_Bills_CreationProcessFE_1
+      - Expenses_API
+      - Income_Invoice_CreationProcess_2
+      - Items
+      - API
+      - Kardex
+      - Login_Signup_cypress_16
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+        - uses: actions/checkout@v4
+
+        - run: echo "Destroying dynamic env"
+      
